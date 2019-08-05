@@ -8,7 +8,7 @@ export class Table {
   }
 
   _onRowClick(e) {
-    const target = e.target.closest('tr');
+    const target = e.target.closest('tbody tr');
     if (!target) return;
 
     const id = target.dataset.id;
@@ -17,7 +17,7 @@ export class Table {
 
   _render(data) {
     this._el.innerHTML = `
-      <table class="data-table highlight"> 
+      <table class="data-table highlight">
         <thead>
           <tr>
               <th>Name</th>

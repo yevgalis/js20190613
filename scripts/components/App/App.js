@@ -36,9 +36,16 @@ export class App {
     });
   }
 
+  _buyItem(item, amount) {
+    const sumPrice = item.price * amount;
+    this._portfolio.updatePortfolio(item, sumPrice);
+  }
+
   _initTradeWidget() {
     this._tradeWidget = new TradeWidget({
       element: this._el.querySelector('[data-element="trade-widget"]'),
+      balance: this._userBalance,
+      onBuyClick: (item, amount) => this._buyItem(item, amount),
     });
   }
 
@@ -46,14 +53,14 @@ export class App {
     this._el.innerHTML = `
       <div class="row">
         <div class="col s12">
-            <h1>Tiny Crypto Market</h1>
+          <h1>Tiny Crypto Market</h1>
         </div>
       </div>
       <div class="row portfolio-row">
-          <div class="col s6 offset-s6" data-element="portfolio"></div>
+        <div class="col s6 offset-s6" data-element="portfolio"></div>
       </div>
       <div class="row">
-          <div class="col s12" data-element="table"></div>
+        <div class="col s12" data-element="table"></div>
       </div>
       <div data-element="trade-widget"></div>
     `;

@@ -7,6 +7,10 @@ export class Portfolio {
     this._render();
   }
 
+  updatePortfolio(item, sum) {
+    console.log(item, sum);
+  }
+
   _render() {
     this._el.innerHTML = `
       <ul class="collapsible portfolio">

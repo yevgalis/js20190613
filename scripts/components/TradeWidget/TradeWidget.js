@@ -1,11 +1,15 @@
 export class TradeWidget {
-  constructor({ element }) {
+  constructor({ element, balance, onBuyClick }) {
     this._el = element;
+    this._balance = balance;
+    this._onBuyClickCallback = onBuyClick;
 
     this._el.addEventListener('input', e => {
       const value = +e.target.value;
       this._updateDisplay(value);
-    })
+    });
+
+    this._el.addEventListener('click', e => this._buy(e));
   }
 
   trade(item) {
@@ -18,6 +22,31 @@ export class TradeWidget {
   _updateDisplay(value) {
     this._totalEl = this._el.querySelector('#item-total');
     this._totalEl.textContent = this._currentItem.price * value;
+  }
+
+  _buy(e) {
+    const target = e.target;
+    if (!target.closest('.modal-close')) return;
+
+    const input = this._el.querySelector('#amount');
+
+    if (target.dataset.widget === 'buy' && this._validateInput(input)) {
+      this._onBuyClickCallback(this._currentItem, input.value);
+      this._closeWidget();
+    } else if (target.dataset.widget !== 'buy') {
+      this._closeWidget();
+    }
+  }
+
+  _validateInput(input) {
+    if (this._currentItem.price * input.value <= this._balance) return true;
+
+    input.style.color = 'red';
+    return false;
+  }
+
+  _closeWidget() {
+    this._el.querySelector('#modal').classList.remove('open');
   }
 
   _render(item) {
@@ -37,10 +66,10 @@ export class TradeWidget {
               </form>
               </div>
           </div>
-          
+
           <div class="modal-footer">
-            <a href="#!" class="modal-close waves-effect waves-teal btn-flat">Buy</a>
-            <a href="#!" class="modal-close waves-effect waves-teal btn-flat">Cancel</a>
+            <a href="#!" class="modal-close waves-effect waves-teal btn-flat" data-widget="buy">Buy</a>
+            <a href="#!" class="modal-close waves-effect waves-teal btn-flat" data-widget="cancel">Cancel</a>
           </div>
       </div>
     `;
