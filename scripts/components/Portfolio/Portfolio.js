@@ -7,8 +7,8 @@ export class Portfolio {
     this._render();
   }
 
-  updatePortfolio(item, sum) {
-    console.log(item, sum);
+  updatePortfolio(item, amount) {
+    console.log(item, amount);
   }
 
   _render() {

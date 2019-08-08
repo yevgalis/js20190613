@@ -6,6 +6,16 @@ export class TradeWidget extends Component {
     this._el = element;
     this._balance = balance;
 
+    this._el.addEventListener('keydown', e => {
+      const { target, key } = e;
+
+      if (!target.closest('#amount')) return;
+
+      if (!Component.isNumeric(key) && key !== 'Backspace' && key !== '.') {
+        e.preventDefault();
+      }
+    });
+
     this._el.addEventListener('input', e => {
       const value = +e.target.value;
       this._updateDisplay(value);
@@ -38,7 +48,7 @@ export class TradeWidget extends Component {
       const buyEvent = new CustomEvent('buy', {
         detail: {
           item: this._currentItem,
-          amount: input.value,
+          amount: +input.value,
         }
       });
 
@@ -72,7 +82,7 @@ export class TradeWidget extends Component {
           <div class="row">
             <form class="col s12">
               <div class="input-field col s4">
-                <input id="amount" type="text">
+                <input id="amount" type="number">
                 <label for="amount">Amount</label>
               </div>
             </form>

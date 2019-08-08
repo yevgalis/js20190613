@@ -48,7 +48,7 @@ export class App {
       balance: this._userBalance,
     });
 
-    this._tradeWidget.on('buy', e => this._buyItem(e.detail.item, e.detail.amount));
+    this._tradeWidget.on('buy', e => this._portfolio.updatePortfolio(e.detail.item, e.detail.amount));
   }
 
   _render() {
