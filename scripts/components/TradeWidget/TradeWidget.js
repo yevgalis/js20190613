@@ -1,8 +1,10 @@
-export class TradeWidget {
-  constructor({ element, balance, onBuyClick }) {
+import { Component } from '../Component/Component.js';
+
+export class TradeWidget extends Component {
+  constructor({ element, balance }) {
+    super();
     this._el = element;
     this._balance = balance;
-    this._onBuyClickCallback = onBuyClick;
 
     this._el.addEventListener('input', e => {
       const value = +e.target.value;
@@ -25,16 +27,26 @@ export class TradeWidget {
   }
 
   _buy(e) {
+    e.preventDefault();
+
     const target = e.target;
     if (!target.closest('.modal-close')) return;
 
     const input = this._el.querySelector('#amount');
 
     if (target.dataset.widget === 'buy' && this._validateInput(input)) {
-      this._onBuyClickCallback(this._currentItem, input.value);
-      this._closeWidget();
+      const buyEvent = new CustomEvent('buy', {
+        detail: {
+          item: this._currentItem,
+          amount: input.value,
+        }
+      });
+
+      this._el.dispatchEvent(buyEvent);
+
+      this.closeWidget();
     } else if (target.dataset.widget !== 'buy') {
-      this._closeWidget();
+      this.closeWidget();
     }
   }
 
@@ -45,7 +57,7 @@ export class TradeWidget {
     return false;
   }
 
-  _closeWidget() {
+  closeWidget() {
     this._el.querySelector('#modal').classList.remove('open');
   }
 
