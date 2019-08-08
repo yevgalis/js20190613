@@ -20,10 +20,10 @@ export class Table {
       <table class="data-table highlight">
         <thead>
           <tr>
-              <th>Name</th>
-              <th>Symbol</th>
-              <th>Rank</th>
-              <th>Price</th>
+            <th>Name</th>
+            <th>Symbol</th>
+            <th>Rank</th>
+            <th>Price</th>
           </tr>
         </thead>
         <tbody>
