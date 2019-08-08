@@ -38,9 +38,14 @@ export class TradeWidget extends Component {
 
   _buy(e) {
     e.preventDefault();
-
     const target = e.target;
+
     if (!target.closest('.modal-close')) return;
+
+    if (target.dataset.widget === 'cancel') {
+      this.closeWidget();
+      return;
+    };
 
     const input = this._el.querySelector('#amount');
 
@@ -53,9 +58,6 @@ export class TradeWidget extends Component {
       });
 
       this._el.dispatchEvent(buyEvent);
-
-      this.closeWidget();
-    } else if (target.dataset.widget !== 'buy') {
       this.closeWidget();
     }
   }

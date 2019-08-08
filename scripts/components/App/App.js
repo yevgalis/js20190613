@@ -37,18 +37,21 @@ export class App {
     });
   }
 
-  _buyItem(item, amount) {
-    const sumPrice = item.price * amount;
-    this._portfolio.updatePortfolio(item, sumPrice);
-  }
-
   _initTradeWidget() {
     this._tradeWidget = new TradeWidget({
       element: this._el.querySelector('[data-element="trade-widget"]'),
       balance: this._userBalance,
     });
 
-    this._tradeWidget.on('buy', e => this._portfolio.updatePortfolio(e.detail.item, e.detail.amount));
+    this._tradeWidget.on('buy', e => {
+      const { item, amount } = e.detail;
+      const purchaseSum = item.price * amount;
+
+      this._userBalance -= purchaseSum;
+      this._tradeWidget.updateBalance(this._userBalance)
+      this._portfolio.updateBalance(this._userBalance)
+      this._portfolio.updatePortfolio(item, amount)
+    });
   }
 
   _render() {
