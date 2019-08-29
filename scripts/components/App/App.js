@@ -1,4 +1,5 @@
 import { Table } from '../Table/Table.js';
+import { Filter } from '../Filter/Filter.js';
 import { Portfolio } from '../Portfolio/Portfolio.js';
 import { TradeWidget } from '../TradeWidget/TradeWidget.js';
 import { DataService } from '../../services/DataService.js';
@@ -13,6 +14,7 @@ export class App {
       .then(data => {
         this._data = data;
         this._initTable();
+        this._initFilter();
       });
 
     this._initPortfolio();
@@ -31,6 +33,20 @@ export class App {
     });
 
     this._table.on('rowClick', e => this._tradeItem(e.detail));
+  }
+
+  _initFilter() {
+    this._filter = new Filter({
+      element: this._el.querySelector('[data-element=filter]'),
+    });
+
+    this._filter.on('filter', e => {
+      const filterValue = e.detail;
+      DataService.getCurrencies({ filter: filterValue })
+        .then(data => {
+          this._table.update(data);
+        });
+    });
   }
 
   _initPortfolio() {
@@ -63,6 +79,9 @@ export class App {
         <div class="col s12">
           <h1>Tiny Crypto Market</h1>
         </div>
+      </div>
+      <div class="row">
+        <div class="col s12" data-element="filter"></div>
       </div>
       <div class="row">
         <div class="col s12" data-element="table"></div>

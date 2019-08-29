@@ -23,6 +23,10 @@ export class Table extends Component {
     }
   }
 
+  update(data) {
+    this._render(data);
+  }
+
   _render(data) {
     this._el.innerHTML = `
       <table class="data-table highlight">

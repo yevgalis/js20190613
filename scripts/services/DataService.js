@@ -5,10 +5,14 @@ const COINS_URL = 'https://api.coinpaprika.com/v1/coins';
 const getSingleCoinUrl = coinId => `${COINS_URL}/${coinId}/ohlcv/latest`;
 
 export const DataService = {
-  getCurrencies() {
+  getCurrencies(query = { filter: '' }) {
+    const { filter } = query;
+
     return HttpService.setRequest(COINS_URL)
       .then(data => {
-        data = data.slice(0, RESULTS_QUANTITY);
+        data = data
+          .filter(item => item.name.toLowerCase().includes(filter) && item.is_active)
+          .slice(0, RESULTS_QUANTITY);
         return DataService.getCoinsPrice(data);
       });
   },
