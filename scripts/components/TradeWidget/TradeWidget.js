@@ -11,7 +11,7 @@ export class TradeWidget extends Component {
 
       if (!target.closest('#amount')) return;
 
-      if (!Component.isNumeric(key) && key !== 'Backspace' && key !== '.') {
+      if (!isNumeric(key) && key !== 'Backspace' && key !== '.') {
         e.preventDefault();
       }
     });
@@ -100,4 +100,8 @@ export class TradeWidget extends Component {
     let elems = this._el.querySelectorAll('.collapsible');
     M.Collapsible.init(elems);
   }
+}
+
+function isNumeric(num) {
+  return !isNaN(parseFloat(num)) && isFinite(num);
 }
