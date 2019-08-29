@@ -5,29 +5,27 @@ const COINS_URL = 'https://api.coinpaprika.com/v1/coins';
 const getSingleCoinUrl = coinId => `${COINS_URL}/${coinId}/ohlcv/latest`;
 
 export const DataService = {
-  getCurrencies(query = { filter: '' }) {
+  async getCurrencies(query = { filter: '' }) {
     const { filter } = query;
+    let data = await HttpService.setRequest(COINS_URL);
 
-    return HttpService.setRequest(COINS_URL)
-      .then(data => {
-        data = data
-          .filter(item => item.name.toLowerCase().includes(filter) && item.is_active)
-          .slice(0, RESULTS_QUANTITY);
-        return DataService.getCoinsPrice(data);
-      });
+    data = data
+      .filter(item => item.name.toLowerCase().includes(filter) && item.is_active)
+      .slice(0, RESULTS_QUANTITY);
+
+    return DataService.getCoinsPrice(data);
   },
 
-  getCoinsPrice(data) {
+  async getCoinsPrice(data) {
     const coinsPriceUrls = data.map(item => getSingleCoinUrl(item.id));
+    const coins = await HttpService.setMultipleRequests(coinsPriceUrls);
 
-    return HttpService.setMultipleRequests(coinsPriceUrls)
-      .then(coins => {
-        const fullData = data.map((item, index) => {
-          item.price = coins[index][0].close;
-          return item;
-        });
+    const fullData = data.map((item, index) => {
+      item.price = coins[index][0].close;
+      return item;
+    });
 
-        return fullData;
-      })
+    console.log(fullData);
+    return fullData;
   }
 };

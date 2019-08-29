@@ -22,7 +22,7 @@ export class Filter extends Component {
     this._el.innerHTML = `
       <div class="input-field col s4">
         <input type="text">
-        <label>Filter</label>
+        <label>Filter by name</label>
       </div>
     `;
   }
