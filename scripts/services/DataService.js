@@ -25,7 +25,6 @@ export const DataService = {
       return item;
     });
 
-    console.log(fullData);
     return fullData;
   }
 };
