@@ -5,6 +5,7 @@ export const HttpService = {
     return fetch(url).then(res => res.json());
 
     // TODO: error handling
+    // BUG: ADD LISTENERS AFTER FILTERING
   },
 
   setMultipleRequests(urls) {

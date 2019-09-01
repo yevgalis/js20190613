@@ -1,10 +1,14 @@
 const path = require('path');
+const isDevBuild = process.env.NODE_ENV === 'development';
+const { CleanWebpackPlugin } = require('clean-webpack-plugin');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = {
-  mode: 'none',
+  mode: isDevBuild ? 'none' : 'production',
   entry: './scripts/index.js',
   // watch: true,
-  devtool: 'source-map',
+  devtool: isDevBuild ? 'source-map' : 'none',
   devServer: {
     contentBase: './build',
   },
@@ -26,5 +30,17 @@ module.exports = {
         }
       }
     ]
-  }
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HtmlWebpackPlugin({
+      template: './index.html'
+    }),
+    new CopyPlugin([
+      {
+        from: './index.css',
+        to: './'
+      }
+    ])
+  ]
 };
