@@ -3,10 +3,13 @@ const path = require('path');
 module.exports = {
   mode: 'none',
   entry: './scripts/index.js',
-  watch: true,
+  // watch: true,
   devtool: 'source-map',
+  devServer: {
+    contentBase: './build',
+  },
   output: {
-    filename: 'bundle.js',
+    filename: 'bundle.[hash:4].js',
     path: path.resolve(__dirname, 'build')
   },
   module: {
